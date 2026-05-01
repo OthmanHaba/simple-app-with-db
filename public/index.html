@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Counter</title>
+  <style>
+    body { font-family: system-ui, sans-serif; display: grid; place-items: center; height: 100vh; margin: 0; }
+    .card { text-align: center; }
+    #count { font-size: 4rem; font-weight: 700; margin: 0 0 1rem; }
+    button { font-size: 1rem; padding: 0.6rem 1.2rem; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <p id="count">–</p>
+    <button id="btn">Increment</button>
+  </div>
+  <script>
+    const countEl = document.getElementById('count');
+    const btn = document.getElementById('btn');
+    const render = (v) => { countEl.textContent = v; };
+
+    fetch('/count').then(r => r.json()).then(d => render(d.value));
+    btn.addEventListener('click', async () => {
+      const r = await fetch('/increment', { method: 'POST' });
+      const d = await r.json();
+      render(d.value);
+    });
+  </script>
+</body>
+</html>
